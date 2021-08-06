@@ -1,8 +1,41 @@
+const { default: axios } = require("axios");
+
 /*
   STEP 1: using axios, send a GET request to the following URL
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
+const followersArray = ['tetondan',
+  'dustinmyers',
+  'justsml',
+  'luishrd',
+  ,'bigknell'];
+
+const entryPoint = document.querySelector('.cards')
+
+function getGitHub(name){
+  axios.get(`https://api.github.com/users/${name}`)
+  .then(res => {
+    console.log(res) 
+    const newCard = gitCardMaker(res.data) //its passing a string instead of an object
+    entryPoint.appendChild(newCard)  //object does not use foreach
+  })
+  .catch(err => {
+    console.log(err)
+  })
+}
+
+followersArray.forEach(follower => {
+   getGitHub(follower)
+})
+
+// axios.get(`https://api.github.com/users/jesusnavarrete215`)
+// .then(res => {
+// console.log(res)
+// })
+// .catch(err => {
+//   console.log(err)
+// })
 
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
@@ -28,7 +61,7 @@
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -49,7 +82,6 @@ const followersArray = [];
       </div>
     </div>
 */
-
 /*
   List of LS Instructors Github username's:
     tetondan
@@ -58,3 +90,71 @@ const followersArray = [];
     luishrd
     bigknell
 */
+// const testArray = [{
+//   name: 'Jesus',
+//   userName: 'JesusNavarrete215',
+//   location: 'Arizona',
+//   img: 'https://avatars.githubusercontent.com/u/85150148?v=4',
+//   adddress: 'https://github.com/JesusNavarrete21',
+//   followers: '0',
+//   following: '0',
+//   bio: 'With a degree in Business I am looking to combine it with full stack web development to expand my horizon.'
+// }]
+
+// const followersArray = ['tetondan',
+//   'dustinmyers',
+//   'justsml',
+//   'luishrd',
+//   ,'bigknell'];
+
+function gitCardMaker({name, login, location, avatar_url, address, followers, following, bio}){
+  //creating the elements
+  const cardb = document.createElement('div')
+  const imgb = document.createElement('img')
+  const cardInfob = document.createElement('div')
+  const nameb = document.createElement('h3')
+  const userNameb = document.createElement('p')
+  const locationb = document.createElement('p')
+  const profileb = document.createElement('p')
+  const addressb = document.createElement('a')
+  const followersb = document.createElement('p')
+  const followingb = document.createElement('p')
+  const biob = document.createElement('p')
+  //creating the hierarchy
+  cardb.appendChild(imgb)
+  cardb.appendChild(cardInfob)
+  cardInfob.appendChild(nameb)
+  cardInfob.appendChild(userNameb)
+  cardInfob.appendChild(locationb)
+  cardInfob.appendChild(profileb)
+  profileb.appendChild(addressb) //will need to add a href
+  cardInfob.appendChild(followersb)
+  cardInfob.appendChild(followingb)
+  cardInfob.appendChild(biob)
+  //Adding values to the elements
+  nameb.textContent = ` Name: ${name}`
+  userNameb.textContent = `Username: ${login}`
+  locationb.textContent = `Location: ${location}`
+  imgb.src = avatar_url
+  addressb.src = address
+  addressb.textContent = `Profile: ${address}`
+  followersb.textContent = `Followers: ${followers}`
+  followingb.textContent = `Following: ${following}`
+  biob.textContent = `Bio: ${bio}`
+
+  // add class names to the elements
+  cardb.classList.add('card')
+  cardInfob.classList.add('card-info')
+  nameb.classList.add('name')
+  userNameb.classList.add('username')
+  
+  return cardb;
+}
+
+// const entryPoint = document.querySelector('.cards')
+
+// followersArray.forEach( card => {
+//   const newCard = gitCardMaker(card) //its passing a string instead of an object
+//   entryPoint.appendChild(newCard)  
+// })
+
